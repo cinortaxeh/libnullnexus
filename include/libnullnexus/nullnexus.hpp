@@ -19,13 +19,12 @@ public:
         bool connected;
         std::string server_steamid;
         std::string steamid;
-        int server_spawn_count;
 
         bool operator==(TF2Server &other) const
         {
-            return connected == other.connected && server_steamid == other.server_steamid && steamid == other.steamid && server_spawn_count == other.server_spawn_count;
+            return connected == other.connected && server_steamid == other.server_steamid && steamid == other.steamid;
         }
-        explicit TF2Server(bool connected = false, std::string server_steamid = "", std::string steamid = "", int server_spawn_count = -1) : connected(connected), server_steamid(std::move(server_steamid)), steamid(std::move(steamid)), server_spawn_count(server_spawn_count)
+        explicit TF2Server(bool connected = false, std::string server_steamid = "", std::string steamid = "") : connected(connected), server_steamid(std::move(server_steamid)), steamid(std::move(steamid))
         {
         }
     };
@@ -114,7 +113,6 @@ private:
         {
             headers.emplace_back("nullnexus_server_server_steamid", settings.tf2server->server_steamid);
             headers.emplace_back("nullnexus_server_steamid", settings.tf2server->steamid);
-            headers.emplace_back("nullnexus_server_server_spawn_count", std::to_string(settings.tf2server->server_spawn_count));
         }
         if (ws)
             ws->setCustomHeaders(headers);
@@ -159,7 +157,6 @@ public:
             {
                 pt_server.put("server_steamid", newsettings.tf2server->server_steamid);
                 pt_server.put("steamid", newsettings.tf2server->steamid);
-                pt_server.put("server_spawn_count", std::to_string(newsettings.tf2server->server_spawn_count));
             }
             settings.tf2server = *newsettings.tf2server;
             pt.put_child("server", pt_server);
